@@ -1,0 +1,11 @@
+server:
+  port: ${gateway.listen.port:8090}
+spring:
+  application:
+    name: spring-cloud-gateway
+  cloud:
+    gateway:
+      enabled: true
+      discovery:
+        locator:
+          lower-case-service-id: true
