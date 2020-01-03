@@ -17,6 +17,27 @@
         ],
         "uri": "http://10.11.82.186:9501/",
         "filters": []
+    },
+    {
+        "id": "rewrite",
+        "predicates": [
+            {
+                "name": "Path",
+                "args": {
+                    "pattern": "/rewrite/**"
+                }
+            }
+        ],
+        "uri": "http://www.baidu.com/",
+        "filters": [
+            {
+                "name": "RewritePath",
+                "args" : {
+                    "regexp": "/rewrite/(?<segment>.*)",
+                    "replacement": "/$\\{segment}"
+                }
+            }
+        ]
     }
 ]
 ```
