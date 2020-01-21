@@ -1,8 +1,9 @@
-package com.alibaba.sentinel.gateway;
+package com.alibaba.sentinel.gateway.handler;
 
 import com.alibaba.csp.sentinel.adapter.gateway.sc.callback.GatewayCallbackManager;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.util.function.Supplier;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.codec.HttpMessageWriter;
 import org.springframework.http.codec.ServerCodecConfigurer;
@@ -14,8 +15,12 @@ import org.springframework.web.server.WebExceptionHandler;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author tam
+ */
 public class JsonSentinelGatewayBlockExceptionHandler implements WebExceptionHandler {
     private List<ViewResolver> viewResolvers;
     private List<HttpMessageWriter<?>> messageWriters;
@@ -28,7 +33,13 @@ public class JsonSentinelGatewayBlockExceptionHandler implements WebExceptionHan
     private Mono<Void> writeResponse(ServerResponse response, ServerWebExchange exchange) {
         ServerHttpResponse serverHttpResponse = exchange.getResponse();
         serverHttpResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-        byte[] datas = "{\"code\":403,\"msg\":\"限流了\"}".getBytes(StandardCharsets.UTF_8);
+        JSONObject object = new JSONObject();
+        object.put("status", "-1");
+        object.put("code", "-1");
+        object.put("msg", "请求频率太高，请稍后再试");
+        object.put("message", "请求频率太高，请稍后再试");
+        object.put("data", new ArrayList<>());
+        byte[] datas = object.toJSONString().getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = serverHttpResponse.bufferFactory().wrap(datas);
         return serverHttpResponse.writeWith(Mono.just(buffer));
     }

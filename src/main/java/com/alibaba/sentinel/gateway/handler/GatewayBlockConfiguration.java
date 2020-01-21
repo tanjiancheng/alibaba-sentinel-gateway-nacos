@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.sentinel.gateway;
+package com.alibaba.sentinel.gateway.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
@@ -29,17 +29,17 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author Eric Zhao
+ * @author tam
  */
 @Configuration
 @Slf4j
-public class GatewayConfiguration {
+public class GatewayBlockConfiguration {
 
     private final List<ViewResolver> viewResolvers;
     private final ServerCodecConfigurer serverCodecConfigurer;
 
-    public GatewayConfiguration(ObjectProvider<List<ViewResolver>> viewResolversProvider,
-                                ServerCodecConfigurer serverCodecConfigurer) {
+    public GatewayBlockConfiguration(ObjectProvider<List<ViewResolver>> viewResolversProvider,
+                                     ServerCodecConfigurer serverCodecConfigurer) {
         this.viewResolvers = viewResolversProvider.getIfAvailable(Collections::emptyList);
         this.serverCodecConfigurer = serverCodecConfigurer;
     }

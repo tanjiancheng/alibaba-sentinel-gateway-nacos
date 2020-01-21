@@ -28,7 +28,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * </code>
  * </p>
  *
- * @author Eric Zhao
+ * @author tam
  */
 @SpringBootApplication
 @EnableDiscoveryClient
