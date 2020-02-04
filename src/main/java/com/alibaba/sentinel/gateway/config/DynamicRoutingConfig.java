@@ -71,6 +71,8 @@ public class DynamicRoutingConfig implements ApplicationEventPublisherAware {
         }
 
         configService.addListener(this.dataId, this.groupId, new Listener() {
+            private boolean isError = false;
+
             @Override
             public Executor getExecutor() {
                 return null;
@@ -84,6 +86,7 @@ public class DynamicRoutingConfig implements ApplicationEventPublisherAware {
                     try {
                         update(assembleRouteDefinition(route));
                     } catch (Exception e) {
+                        isError = true;
                         //配置错误的路由后重新设置旧的路由回去
                         logger.info(route.getId() + " 路由配置错误");
                         for (RouteEntity oldRoute : oldRouteEntityList) {
@@ -93,6 +96,9 @@ public class DynamicRoutingConfig implements ApplicationEventPublisherAware {
                             }
                         }
                     }
+                }
+                if (!isError) {
+                    oldRouteEntityList = list;
                 }
             }
         });
